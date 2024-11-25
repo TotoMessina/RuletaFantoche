@@ -1,0 +1,121 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #0c0c0c; /* Fondo claro */
+}
+
+#ruleta {
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.halo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%; /* Proporcional al tamaño de la ruleta */
+    height: 70%; /* Proporcional al tamaño de la ruleta */
+    border-radius: 50%;
+    background-color: transparent;
+    box-shadow:  0px 0px 500px #FF4040; /* Resplandor hacia afuera */
+    z-index: 1;
+}
+
+/* Contenedor de la ruleta y la flecha */
+.contenedor-ruleta {
+    position: relative;
+    width: 400px; /* Ancho del canvas */
+    margin: 0 auto;
+}
+
+/* Flecha invertida (hacia abajo) */
+#flecha {
+    position: absolute;
+    bottom: 97%; /* La flecha está fuera del canvas hacia abajo */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid red;
+    z-index: 10;
+}
+
+/* Estilos del canvas */
+canvas {
+    border: 2px solid #000;
+    border-radius: 50%;
+}
+
+/* Botón de girar */
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007BFF; /* Azul claro */
+    color: white; /* Texto blanco */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+    transition: background-color 0.3s ease; /* Transición suave */
+}
+
+/* Estilo del botón al pasar el mouse */
+button:hover {
+    background-color: #0056b3; /* Azul oscuro */
+}
+
+/* Estilo del botón cuando está desactivado */
+button:disabled {
+    background-color: #ccc; /* Gris */
+    cursor: not-allowed;
+}
+
+/* PARA MODIFICAR EL ESTILO DEL BOTÓN: 
+   - Cambia el `background-color` en la clase `button`.
+   - Ajusta `padding`, `font-size` o `border-radius` para darle otro estilo.
+   - Modifica `box-shadow` o agrégale más propiedades a `hover` para personalizar la interacción.
+*/
+
+/* Estilo para la imagen ganadora en pantalla completa */
+#imagen-ganadora {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+    z-index: 100; /* Asegura que esté por encima de todo */
+}
+
+#imagen-ganadora img {
+    max-width: 90%; /* Ajusta el tamaño de la imagen */
+    max-height: 90%;
+    object-fit: contain;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Animación para mostrar la imagen con un fundido suave */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
