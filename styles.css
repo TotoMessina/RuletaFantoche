@@ -1,3 +1,9 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: 0;
+}
+
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
@@ -7,7 +13,7 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
-    background-color: #0c0c0c; /* Fondo claro */
+    background-color: #0c0c0c; 
 }
 
 #ruleta {
@@ -27,7 +33,7 @@ body {
     height: 70%; /* Proporcional al tamaño de la ruleta */
     border-radius: 50%;
     background-color: transparent;
-    box-shadow:  0px 0px 500px #FF4040; /* Resplandor hacia afuera */
+    box-shadow:  0px 0px 100px #ff0f0f; /* Resplandor hacia afuera */
     z-index: 1;
 }
 
@@ -48,7 +54,7 @@ body {
     height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-top: 30px solid red;
+    border-top: 30px solid #ffffff;
     z-index: 10;
 }
 
@@ -62,8 +68,11 @@ canvas {
 button {
     margin-top: 20px;
     padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007BFF; /* Azul claro */
+    font-size: 14px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+    background-color: #FF4040;
     color: white; /* Texto blanco */
     border: none;
     border-radius: 5px;
@@ -74,7 +83,7 @@ button {
 
 /* Estilo del botón al pasar el mouse */
 button:hover {
-    background-color: #0056b3; /* Azul oscuro */
+    background-color: #c20404; /* Azul oscuro */
 }
 
 /* Estilo del botón cuando está desactivado */
@@ -89,7 +98,7 @@ button:disabled {
    - Modifica `box-shadow` o agrégale más propiedades a `hover` para personalizar la interacción.
 */
 
-/* Estilo para la imagen ganadora en pantalla completa */
+/* Bloquea toda interacción con el fondo */
 #imagen-ganadora {
     position: fixed;
     top: 0;
@@ -99,12 +108,13 @@ button:disabled {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
-    z-index: 100; /* Asegura que esté por encima de todo */
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro */
+    z-index: 10000; /* Asegura que esté por encima de todo */
+    pointer-events: all; /* Bloquea interacciones con el fondo */
 }
 
 #imagen-ganadora img {
-    max-width: 90%; /* Ajusta el tamaño de la imagen */
+    max-width: 90%;
     max-height: 90%;
     object-fit: contain;
     animation: fadeIn 1s ease-in-out;
@@ -117,5 +127,31 @@ button:disabled {
     }
     100% {
         opacity: 1;
+    }
+}
+
+/* Para pantallas pequeñas (teléfonos) */
+@media screen and (max-width: 600px) {
+    .contenedor-ruleta {
+        width: 90vw; /* Reduce el tamaño al 90% del ancho de la ventana */
+    }
+
+    #ruleta {
+        width: 100%; /* Asegura que el canvas ocupe el ancho del contenedor */
+        height: auto; /* Mantiene las proporciones */
+    }
+
+    .halo {
+        width: 90%; /* Ajusta el resplandor alrededor */
+        height: 90%;
+    }
+
+    #flecha {
+        bottom: 98%;
+    }
+
+    button {
+        font-size: 14px; /* Botón más pequeño */
+        padding: 8px 16px; /* Ajusta el tamaño del botón */
     }
 }

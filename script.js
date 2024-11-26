@@ -100,7 +100,6 @@ function dibujarRuleta() {
     }
 }
 
-// Función para girar la ruleta con desaceleración suave
 function girarRuleta() {
     if (ruletaGirada) return;
     ruletaGirada = true;
@@ -143,13 +142,25 @@ function girarRuleta() {
             imgElement.src = imgGanadora.src; // Asigna la imagen ganadora al elemento
 
             // Muestra el contenedor con la imagen
-            document.getElementById('imagen-ganadora').style.display = 'flex';
+            const contenedor = document.getElementById('imagen-ganadora');
+            contenedor.style.display = 'flex';
 
-            // Opcional: Esconder la imagen después de un tiempo
-            setTimeout(() => {
-                document.getElementById('imagen-ganadora').style.display = 'none';
-                ruletaGirada = false; // Permitir girar nuevamente
-            }, 5000); // La imagen se muestra durante 5 segundos
+            // Bloquea todas las interacciones en la página
+            document.body.style.overflow = 'hidden'; // Evita el scroll
+            document.body.style.pointerEvents = 'none'; // Desactiva clics en todo
+
+            // Habilita interacciones solo dentro del contenedor de la imagen ganadora
+            contenedor.style.pointerEvents = 'all';
+
+            // Opcional: agrega un mensaje indicando que se debe refrescar la página
+            const mensaje = document.createElement('p');
+            mensaje.textContent = 'Gracias por participar.';
+            mensaje.style.color = 'white';
+            mensaje.style.position = 'absolute';
+            mensaje.style.bottom = '20px';
+            mensaje.style.fontSize = '18px';
+            mensaje.style.textAlign = 'center';
+            contenedor.appendChild(mensaje);
         }
     }, 1000 / fps);
 }
