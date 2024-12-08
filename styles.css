@@ -47,9 +47,9 @@ body {
 /* Flecha invertida (hacia abajo) */
 #flecha {
     position: absolute;
-    bottom: 97%; /* La flecha está fuera del canvas hacia abajo */
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 50%; /* La flecha está fuera del canvas hacia abajo */
+    left: 100%;
+    transform: translateX(-50%) rotate(90deg);
     width: 0;
     height: 0;
     border-left: 15px solid transparent;
@@ -98,26 +98,25 @@ button:disabled {
    - Modifica `box-shadow` o agrégale más propiedades a `hover` para personalizar la interacción.
 */
 
-/* Bloquea toda interacción con el fondo */
 #imagen-ganadora {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
+    width: 100%;
+    height: 100%;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro */
-    z-index: 10000; /* Asegura que esté por encima de todo */
-    pointer-events: all; /* Bloquea interacciones con el fondo */
+    background: rgba(0, 0, 0, 0.8);
+    opacity: 0; /* Empieza invisible */
+    transition: opacity 1s ease-in; /* Transición suave de opacidad */
+    z-index: 100;
 }
 
 #imagen-ganadora img {
     max-width: 90%;
     max-height: 90%;
-    object-fit: contain;
-    animation: fadeIn 1s ease-in-out;
+    border-radius: 10px;
 }
 
 /* Animación para mostrar la imagen con un fundido suave */

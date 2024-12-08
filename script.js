@@ -7,22 +7,19 @@ const botonGirar = document.getElementById('boton-girar');
 
 let opcionGanadora = -1;
 
-// Opciones de la ruleta: cada porción tiene un color definido y probabilidades iguales
+// Opciones de la ruleta
 let opciones = [
-    { color: '#DC143C', imagen: 'img/IMG-FAN.png', probabilidad: 1 / 8 }, // Naranja
-    { color: '#FF4040', imagen: 'img/IMG-FAN.png', probabilidad: 1 / 8 }, // Verde
-    { color: '#9B111E', imagen: 'img/IMG-FAN.png', probabilidad: 1 / 8 }, // Azul
-    { color: '#E9967A', imagen: 'img/IMG-FAN.png', probabilidad: 1 / 8 }, // Amarillo
-    { color: '#DC143C', imagen: 'img/IMG-FAN.png', probabilidad: 1 / 8 }, // Verde Claro
-    { color: '#FF4040', imagen: 'img/IMG-FAN.png', probabilidad: 1 / 8 }, // Rojo
-    { color: '#9B111E', imagen: 'img/IMG-FAN.png', probabilidad: 1 / 8 }, // Vino
-    { color: '#E9967A', imagen: 'img/IMG-FAN.png', probabilidad: 1 / 8 }  // Morado
+    { color: '#DC143C', imagen: 'img/a.png', probabilidad: 1 / 8 },
+    { color: '#FF4040', imagen: 'img/b.png', probabilidad: 1 / 8 },
+    { color: '#9B111E', imagen: 'img/c.png', probabilidad: 1 / 8 },
+    { color: '#E9967A', imagen: 'img/d.png', probabilidad: 1 / 8 },
+    { color: '#DC143C', imagen: 'img/e.png', probabilidad: 1 / 8 },
+    { color: '#FF4040', imagen: 'img/f.png', probabilidad: 1 / 8 },
+    { color: '#9B111E', imagen: 'img/g.png', probabilidad: 1 / 8 },
+    { color: '#E9967A', imagen: 'img/h.png', probabilidad: 1 / 8 }
 ];
 
-// Variable para almacenar las imágenes cargadas
-let imagenes = [];
-
-// Cargar todas las imágenes antes de dibujar la ruleta
+// Cargar imágenes
 function cargarImagenes() {
     let cargadas = 0;
     opciones.forEach(opcion => {
@@ -30,20 +27,20 @@ function cargarImagenes() {
         img.src = opcion.imagen;
         img.onload = () => {
             cargadas++;
-            imagenes.push(img);
+            opcion.imgElement = img;
             if (cargadas === opciones.length) {
-                dibujarRuleta(); // Dibuja la ruleta una vez todas las imágenes estén cargadas
+                dibujarRuleta();
             }
         };
     });
 }
 
-// Función para dibujar la ruleta
+// Dibujar la ruleta
 function dibujarRuleta() {
     const totalProbabilidad = opciones.reduce((sum, o) => sum + o.probabilidad, 0);
     let inicio = 0;
 
-    opciones.forEach((opcion, index) => {
+    opciones.forEach(opcion => {
         const angulo = (opcion.probabilidad / totalProbabilidad) * 2 * Math.PI;
 
         // Dibuja el segmento
@@ -51,66 +48,66 @@ function dibujarRuleta() {
         ctx.moveTo(canvas.width / 2, canvas.height / 2);
         ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, inicio, inicio + angulo);
         ctx.closePath();
-        ctx.fillStyle = opcion.color; // Usar el color definido en la opción
+        ctx.fillStyle = opcion.color;
         ctx.fill();
 
         // Dibuja la imagen dentro del segmento
-        const img = imagenes[index];
-        const radio = canvas.width / 2;
+        const img = opcion.imgElement;
+        if (img) {
+            const radio = canvas.width / 2;
+            const distanciaImagen = radio * 0.7;
+            const x = radio + Math.cos(inicio + angulo / 2) * distanciaImagen;
+            const y = radio + Math.sin(inicio + angulo / 2) * distanciaImagen;
+            const tamanoImagen = radio / 4;
 
-        // Cambia este valor para mover la imagen más cerca o más lejos del centro
-        const distanciaImagen = radio * 0.8; // Ajusta este valor (0.8 aleja la imagen hacia el borde)
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(inicio + angulo / 2 + Math.PI / 2);
+            ctx.drawImage(img, -tamanoImagen / 2, -tamanoImagen / 2, tamanoImagen, tamanoImagen);
+            ctx.restore();
+        }
 
-        const x = radio + Math.cos(inicio + angulo / 2) * distanciaImagen;
-        const y = radio + Math.sin(inicio + angulo / 2) * distanciaImagen;
-
-        // Tamaño de la imagen, ajusta este valor si quieres cambiar el tamaño de las imágenes
-        const tamanoImagen = radio / 3; // Cambia este valor para modificar el tamaño de la imagen
-
-        // Calculamos el ángulo en el que la imagen debe ser rotada
-        const anguloImagen = inicio + angulo / 2 + Math.PI / 2; // Rotación para que siempre mire hacia abajo
-
-        // Dibuja la imagen rotada
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(anguloImagen);
-        ctx.drawImage(img, -tamanoImagen / 2, -tamanoImagen / 2, tamanoImagen, tamanoImagen);
-        ctx.restore();
-
-        // Agrega un borde fino al segmento
-        ctx.strokeStyle = '#000'; // Negro
-        ctx.lineWidth = 0.3; // Ancho del borde
-        ctx.stroke();
-
-        inicio += angulo; // Siguiente segmento
+        inicio += angulo;
     });
-
-    // Si se ha determinado una opción ganadora, dibuja la imagen grande
-    if (opcionGanadora !== -1) {
-        const imgGanadora = imagenes[opcionGanadora];
-        const radio = canvas.width / 2;
-        const x = radio;
-        const y = radio;
-
-        // Tamaño de la imagen ganadora, la hacemos mucho más grande
-        const tamanoImagenGrande = radio * 1.5; // Ajusta este valor para cambiar el tamaño de la imagen ganadora
-
-        // Dibuja la imagen ganadora en el centro de la ruleta
-        ctx.drawImage(imgGanadora, x - tamanoImagenGrande / 2, y - tamanoImagenGrande / 2, tamanoImagenGrande, tamanoImagenGrande);
-    }
 }
 
+// Determinar opción ganadora con el ángulo final
+function calcularOpcionGanadora(anguloFinal) {
+    const totalAngulo = 2 * Math.PI;
+    let inicio = 0;
+
+    // Calcular el ángulo de cada segmento
+    for (let i = 0; i < opciones.length; i++) {
+        const angulo = (opciones[i].probabilidad * totalAngulo);
+        // Verificar en qué rango se encuentra el ángulo final
+        if (anguloFinal >= inicio && anguloFinal < inicio + angulo) {
+            return i;
+        }
+        inicio += angulo;
+    }
+
+    // Si no encuentra, devuelve la última opción
+    return opciones.length - 1;
+}
+
+// Girar la ruleta
 function girarRuleta() {
     if (ruletaGirada) return;
     ruletaGirada = true;
 
-    const duracion = 6000; // Tiempo total del giro en ms
-    const fps = 60; // Cuadros por segundo
-    let anguloActual = 0; // Ángulo actual de la ruleta
-    let velocidad = 0.6; // Velocidad inicial (radianes por cuadro)
+    const duracion = 6000; // Duración de 6 segundos
+    const fps = 60;
+    const vueltasCompletas = 6; // Más giros para que gire más tiempo
+    const anguloFinalAleatorio = Math.random() * 2 * Math.PI;
+    const anguloTotal = vueltasCompletas * 2 * Math.PI + anguloFinalAleatorio;
+
+    let anguloActual = 0;
+    let velocidadActual = anguloTotal / (duracion / (1000 / fps));
 
     const intervalo = setInterval(() => {
-        // Dibuja la ruleta girando
+        anguloActual += velocidadActual;
+        velocidadActual *= 0.995; // Freno más suave (menor desaceleración)
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.save();
         ctx.translate(canvas.width / 2, canvas.height / 2);
@@ -119,57 +116,38 @@ function girarRuleta() {
         dibujarRuleta();
         ctx.restore();
 
-        // Actualiza el ángulo y disminuye la velocidad
-        anguloActual += velocidad;
-        velocidad *= 0.98; // Desaceleración gradual
-
-        // Detiene el giro cuando la velocidad es muy baja
-        if (velocidad < 0.005) {
+        if (velocidadActual < 0.01) { // Frenar cuando la velocidad es muy baja
             clearInterval(intervalo);
 
-            // Una vez que la ruleta se ha detenido, calcula cuál es la opción ganadora
-            const anguloFinal = anguloActual % (2 * Math.PI); // Ángulo final de la ruleta
-            const totalAngulo = 2 * Math.PI;
-            const anguloPorOpcion = totalAngulo / opciones.length;
-
-            // Determina qué opción quedó al frente
-            opcionGanadora = Math.floor(anguloFinal / anguloPorOpcion);
-            console.log("Opción ganadora:", opcionGanadora);
-
-            // Mostrar la imagen ganadora en pantalla completa
-            const imgGanadora = imagenes[opcionGanadora];
-            const imgElement = document.getElementById('imagen-ganadora-img');
-            imgElement.src = imgGanadora.src; // Asigna la imagen ganadora al elemento
-
-            // Muestra el contenedor con la imagen
-            const contenedor = document.getElementById('imagen-ganadora');
-            contenedor.style.display = 'flex';
-
-            // Bloquea todas las interacciones en la página
-            document.body.style.overflow = 'hidden'; // Evita el scroll
-            document.body.style.pointerEvents = 'none'; // Desactiva clics en todo
-
-            // Habilita interacciones solo dentro del contenedor de la imagen ganadora
-            contenedor.style.pointerEvents = 'all';
-
-            // Opcional: agrega un mensaje indicando que se debe refrescar la página
-            const mensaje = document.createElement('p');
-            mensaje.textContent = 'Gracias por participar.';
-            mensaje.style.color = 'white';
-            mensaje.style.position = 'absolute';
-            mensaje.style.bottom = '20px';
-            mensaje.style.fontSize = '18px';
-            mensaje.style.textAlign = 'center';
-            contenedor.appendChild(mensaje);
+            // Calcular la opción ganadora según el ángulo final de la ruleta
+            anguloActual %= 2 * Math.PI;
+            opcionGanadora = calcularOpcionGanadora(2 * Math.PI - anguloActual);
+            mostrarGanador();
         }
     }, 1000 / fps);
 }
 
-// Variable para determinar si la ruleta ya se giró
+function mostrarGanador() {
+    const imgGanadora = opciones[opcionGanadora].imgElement;
+    const imgElement = document.getElementById('imagen-ganadora-img');
+    imgElement.src = imgGanadora.src;
+
+    const contenedor = document.getElementById('imagen-ganadora');
+    
+    // Mostrar el contenedor de la imagen
+    contenedor.style.display = 'flex';
+    
+    // Retrasar la opacidad para que se vea la transición
+    setTimeout(() => {
+        contenedor.style.opacity = 1; // Hacer visible gradualmente
+    }, 10); // Asegura que el estilo se aplique después de un pequeño retraso
+}
+
+// Estado de la ruleta
 let ruletaGirada = false;
 
-// Cargar las imágenes antes de dibujar la ruleta
+// Cargar imágenes
 cargarImagenes();
 
-// Evento al hacer clic en el botón
+// Evento de giro
 botonGirar.addEventListener('click', girarRuleta);
