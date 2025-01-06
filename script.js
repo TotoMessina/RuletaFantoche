@@ -9,14 +9,14 @@ let opcionGanadora = -1;
 
 // Opciones de la ruleta
 let opciones = [
-    { color: '#DC143C', imagen: 'img/a.png', probabilidad: 1 / 8 },
-    { color: '#FF4040', imagen: 'img/b.png', probabilidad: 1 / 8 },
-    { color: '#9B111E', imagen: 'img/c.png', probabilidad: 1 / 8 },
-    { color: '#E9967A', imagen: 'img/d.png', probabilidad: 1 / 8 },
-    { color: '#DC143C', imagen: 'img/e.png', probabilidad: 1 / 8 },
-    { color: '#FF4040', imagen: 'img/f.png', probabilidad: 1 / 8 },
-    { color: '#9B111E', imagen: 'img/g.png', probabilidad: 1 / 8 },
-    { color: '#E9967A', imagen: 'img/h.png', probabilidad: 1 / 8 }
+    { color: '#DC143C', imagen: 'img/a.png', probabilidad: 0.10 }, // 10%
+    { color: '#FF4040', imagen: 'img/b.png', probabilidad: 0.10 }, // 10%
+    { color: '#9B111E', imagen: 'img/c.png', probabilidad: 0.10 }, // 10%
+    { color: '#E9967A', imagen: 'img/d.png', probabilidad: 0.20 }, // 20% (incrementado)
+    { color: '#DC143C', imagen: 'img/e.png', probabilidad: 0.10 }, // 10%
+    { color: '#FF4040', imagen: 'img/f.png', probabilidad: 0.05 }, // 5% (reducido)
+    { color: '#9B111E', imagen: 'img/g.png', probabilidad: 0.05 }, // 5% (reducido)
+    { color: '#E9967A', imagen: 'img/h.png', probabilidad: 0.20 }  // 20% (incrementado)
 ];
 
 // Cargar imágenes
