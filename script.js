@@ -36,16 +36,14 @@ function cargarImagenes() {
 }
 
 function dibujarRuleta() {
-    const totalProbabilidad = opciones.reduce((sum, o) => sum + o.probabilidad, 0);
+    const anguloSegmento = (2 * Math.PI) / opciones.length; // Todos los segmentos iguales
     let inicio = 0;
 
     opciones.forEach(opcion => {
-        const angulo = (opcion.probabilidad / totalProbabilidad) * 2 * Math.PI;
-
         // Dibuja el segmento
         ctx.beginPath();
         ctx.moveTo(canvas.width / 2, canvas.height / 2);
-        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, inicio, inicio + angulo);
+        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, inicio, inicio + anguloSegmento);
         ctx.closePath();
         ctx.fillStyle = opcion.color;
         ctx.fill();
@@ -55,38 +53,40 @@ function dibujarRuleta() {
         if (img) {
             const radio = canvas.width / 2;
             const distanciaImagen = radio * 0.7;
-            const x = radio + Math.cos(inicio + angulo / 2) * distanciaImagen;
-            const y = radio + Math.sin(inicio + angulo / 2) * distanciaImagen;
-            const tamanoImagen = radio / 3; // Aumenta el tamaño de la imagen
+            const x = radio + Math.cos(inicio + anguloSegmento / 2) * distanciaImagen;
+            const y = radio + Math.sin(inicio + anguloSegmento / 2) * distanciaImagen;
+            const tamanoImagen = radio / 3; // Tamaño de la imagen
 
             ctx.save();
             ctx.translate(x, y);
-            ctx.rotate(inicio + angulo / 2 + Math.PI / 2);
+            ctx.rotate(inicio + anguloSegmento / 2 + Math.PI / 2);
             ctx.drawImage(img, -tamanoImagen / 2, -tamanoImagen / 2, tamanoImagen, tamanoImagen);
             ctx.restore();
         }
 
-        inicio += angulo;
+        inicio += anguloSegmento; // Avanzar al siguiente segmento
     });
 }
 
-// Determinar opción ganadora con el ángulo final
 function calcularOpcionGanadora(anguloFinal) {
-    const totalAngulo = 2 * Math.PI;
-    let inicio = 0;
+    const totalProbabilidad = opciones.reduce((sum, o) => sum + o.probabilidad, 0);
 
-    // Calcular el ángulo de cada segmento
+    // Normalizamos el ángulo entre 0 y 2 * PI
+    anguloFinal %= 2 * Math.PI;
+
+    // Convertimos el ángulo en un valor proporcional a la probabilidad
+    let acumulado = 0;
+
     for (let i = 0; i < opciones.length; i++) {
-        const angulo = (opciones[i].probabilidad * totalAngulo);
-        // Verificar en qué rango se encuentra el ángulo final
-        if (anguloFinal >= inicio && anguloFinal < inicio + angulo) {
+        acumulado += opciones[i].probabilidad / totalProbabilidad;
+
+        // Si el valor proporcional cae dentro del rango acumulado, es el ganador
+        if (anguloFinal < acumulado * 2 * Math.PI) {
             return i;
         }
-        inicio += angulo;
     }
 
-    // Si no encuentra, devuelve la última opción
-    return opciones.length - 1;
+    return opciones.length - 1; // Por seguridad, devolvemos la última opción
 }
 
 // Girar la ruleta
