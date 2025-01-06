@@ -119,6 +119,18 @@ button:disabled {
     border-radius: 10px;
 }
 
+.intro{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30%;
+}
+
+.intro img{
+    width: 50%;
+    height: auto;
+    justify-content: center;
+}
+
 /* Animación para mostrar la imagen con un fundido suave */
 @keyframes fadeIn {
     0% {

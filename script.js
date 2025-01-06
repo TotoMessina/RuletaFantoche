@@ -35,7 +35,6 @@ function cargarImagenes() {
     });
 }
 
-// Dibujar la ruleta
 function dibujarRuleta() {
     const totalProbabilidad = opciones.reduce((sum, o) => sum + o.probabilidad, 0);
     let inicio = 0;
@@ -58,7 +57,7 @@ function dibujarRuleta() {
             const distanciaImagen = radio * 0.7;
             const x = radio + Math.cos(inicio + angulo / 2) * distanciaImagen;
             const y = radio + Math.sin(inicio + angulo / 2) * distanciaImagen;
-            const tamanoImagen = radio / 4;
+            const tamanoImagen = radio / 3; // Aumenta el tamaño de la imagen
 
             ctx.save();
             ctx.translate(x, y);
