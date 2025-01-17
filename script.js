@@ -12,11 +12,11 @@ let opciones = [
     { color: '#DC143C', imagen: 'img/a.png', probabilidad: 0.10 }, // 10%
     { color: '#FF4040', imagen: 'img/b.png', probabilidad: 0.10 }, // 10%
     { color: '#9B111E', imagen: 'img/c.png', probabilidad: 0.10 }, // 10%
-    { color: '#E9967A', imagen: 'img/d.png', probabilidad: 0.20 }, // 20% (incrementado)
+    { color: '#E9967A', imagen: 'img/d.png', probabilidad: 0.20 }, // 20%
     { color: '#DC143C', imagen: 'img/e.png', probabilidad: 0.10 }, // 10%
-    { color: '#FF4040', imagen: 'img/f.png', probabilidad: 0.05 }, // 5% (reducido)
-    { color: '#9B111E', imagen: 'img/g.png', probabilidad: 0.05 }, // 5% (reducido)
-    { color: '#E9967A', imagen: 'img/h.png', probabilidad: 0.20 }  // 20% (incrementado)
+    { color: '#FF4040', imagen: 'img/f.png', probabilidad: 0.05 }, // 5%
+    { color: '#9B111E', imagen: 'img/g.png', probabilidad: 0.05 }, // 5%
+    { color: '#E9967A', imagen: 'img/h.png', probabilidad: 0.20 }  // 20%
 ];
 
 // Cargar imágenes
@@ -69,24 +69,14 @@ function dibujarRuleta() {
 }
 
 function calcularOpcionGanadora(anguloFinal) {
-    const totalProbabilidad = opciones.reduce((sum, o) => sum + o.probabilidad, 0);
+    const anguloSegmento = (2 * Math.PI) / opciones.length;
 
     // Normalizamos el ángulo entre 0 y 2 * PI
     anguloFinal %= 2 * Math.PI;
 
-    // Convertimos el ángulo en un valor proporcional a la probabilidad
-    let acumulado = 0;
-
-    for (let i = 0; i < opciones.length; i++) {
-        acumulado += opciones[i].probabilidad / totalProbabilidad;
-
-        // Si el valor proporcional cae dentro del rango acumulado, es el ganador
-        if (anguloFinal < acumulado * 2 * Math.PI) {
-            return i;
-        }
-    }
-
-    return opciones.length - 1; // Por seguridad, devolvemos la última opción
+    // Calculamos el índice de la opción ganadora
+    const indice = Math.floor(anguloFinal / anguloSegmento);
+    return indice;
 }
 
 // Girar la ruleta
